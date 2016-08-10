@@ -6,7 +6,8 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(glue = "uk.co.dajohnston.cukes.stepdefinitions", features = "classpath:features/")
+@CucumberOptions(glue = "uk.co.dajohnston.cukes.stepdefinitions", features = "classpath:features/", plugin = { "pretty",
+        "html:target/cucumber" })
 public class CucumberTests {
 
 }

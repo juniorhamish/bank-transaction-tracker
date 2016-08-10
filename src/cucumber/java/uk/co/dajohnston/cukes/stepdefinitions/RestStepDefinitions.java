@@ -9,26 +9,20 @@ import java.net.URL;
 import java.util.List;
 
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import uk.co.dajohnston.accounts.Application;
 import uk.co.dajohnston.accounts.Transaction;
 
-@ContextConfiguration(classes = Application.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RestStepDefinitions {
 
     @LocalServerPort
