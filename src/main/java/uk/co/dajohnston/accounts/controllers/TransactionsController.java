@@ -22,8 +22,10 @@ public class TransactionsController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/transactionFile")
     @ResponseStatus(value = HttpStatus.OK)
-    public void uploadTransactions(@RequestParam("file") MultipartFile file) throws IOException {
+    public List<Transaction> uploadTransactions(@RequestParam("file") MultipartFile file) throws IOException {
         transactions = new TransactionsParser(new InputStreamReader(file.getInputStream())).parse();
+
+        return transactions;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/transactions")
