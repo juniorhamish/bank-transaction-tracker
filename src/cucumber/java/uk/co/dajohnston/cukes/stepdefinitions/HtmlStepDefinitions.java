@@ -21,12 +21,12 @@ public class HtmlStepDefinitions {
 
     private WebDriver driver;
 
-    @Before
+    @Before(value = "@Web")
     public void setUp() {
         driver = new FirefoxDriver();
     }
 
-    @After
+    @After(value = "@Web")
     public void tearDown() {
         driver.close();
     }
