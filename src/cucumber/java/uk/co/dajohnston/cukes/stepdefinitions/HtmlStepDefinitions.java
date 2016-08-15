@@ -43,7 +43,7 @@ public class HtmlStepDefinitions {
 
     @When("^I upload transactions file \"([^\"]*)\"$")
     public void uploadTransactionsFile(String fileName) {
-        WebElement uploadButton = driver.findElement(By.id("uploadTransactionFileButton"));
+        WebElement uploadButton = driver.findElement(By.id("transactionFile"));
         uploadButton.sendKeys(fileName);
     }
 
