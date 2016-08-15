@@ -1,13 +1,21 @@
 package uk.co.dajohnston.cukes.stepdefinitions;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.joda.money.Money;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
@@ -18,7 +26,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.thymeleaf.util.StringUtils;
 
+import cucumber.api.DataTable;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import uk.co.dajohnston.accounts.Transaction;
@@ -30,7 +41,7 @@ public class RestStepDefinitions {
 
     protected RestTemplate restTemplate = new RestTemplate();
 
-    private ResponseEntity<Void> result;
+    private ResponseEntity<List<Transaction>> result;
 
     private List<Transaction> transactions;
 
@@ -38,10 +49,17 @@ public class RestStepDefinitions {
     public void uploadTransactionFile(String fileName) throws URISyntaxException {
         URL transactionFileURL = getClass().getClassLoader().getResource(fileName);
         File transactionFile = new File(transactionFileURL.toURI());
+        uploadFile(transactionFile);
+    }
+
+    private void uploadFile(File transactionFile) {
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
         parts.add("file", new FileSystemResource(transactionFile));
         result = restTemplate.exchange("http://localhost:" + port + "/transactionFile", HttpMethod.POST,
-                new HttpEntity<MultiValueMap<String, Object>>(parts), Void.class);
+                new HttpEntity<MultiValueMap<String, Object>>(parts),
+                new ParameterizedTypeReference<List<Transaction>>() {
+                });
+        transactions = result.getBody();
     }
 
     @Then("^I should get a success response$")
@@ -59,5 +77,32 @@ public class RestStepDefinitions {
     @Then("^there should be (\\d+) transactions$")
     public void there_should_be_transactions(int expectedTransactionCount) {
         assertThat(transactions.size(), is(expectedTransactionCount));
+    }
+
+    @Given("^I upload a file containing the following transactions$")
+    public void uploadTransactions(DataTable transactions) throws IOException {
+        List<List<String>> transactionData = transactions.raw();
+        File tempTransactionFile = File.createTempFile("Transactions", ".csv");
+        try (Writer output = new OutputStreamWriter(new FileOutputStream(tempTransactionFile))) {
+            for (List<String> row : transactionData) {
+                output.write(StringUtils.join(row, ','));
+                output.write(System.lineSeparator());
+            }
+        }
+        uploadFile(tempTransactionFile);
+    }
+
+    @Then("^I should have a transaction from \"([^\"]*)\" of type \"([^\"]*)\" with description \"([^\"]*)\", paid out \"([^\"]*)\", paid in \"([^\"]*)\" and a balance of \"([^\"]*)\"$")
+    public void verifyTransactionsFromResponse(String date, String transactionType, String description, String paidOut,
+            String paidIn, String balance) {
+        Transaction expectedTransaction = new Transaction();
+        expectedTransaction.date = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy"));
+        expectedTransaction.transactionType = transactionType;
+        expectedTransaction.description = description;
+        expectedTransaction.paidOut = Money.parse(paidOut.replace("£", "GBP"));
+        expectedTransaction.paidIn = Money.parse(paidIn.replace("£", "GBP"));
+        expectedTransaction.balance = Money.parse(balance.replace("£", "GBP"));
+
+        assertThat(transactions, hasItem(expectedTransaction));
     }
 }
