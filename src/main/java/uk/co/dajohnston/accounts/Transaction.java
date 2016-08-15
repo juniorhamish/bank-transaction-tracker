@@ -7,8 +7,12 @@ import org.apache.commons.csv.CSVRecord;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import uk.co.dajohnston.accounts.json.MoneyDeserializer;
+
 @ToString
 @EqualsAndHashCode
 public class Transaction {
@@ -52,12 +56,27 @@ public class Transaction {
         return paidOut;
     }
 
+    @JsonDeserialize(using = MoneyDeserializer.class)
+    public void setPaidOut(Money paidOut) {
+        this.paidOut = paidOut;
+    }
+
     public Money paidIn() {
         return paidIn;
     }
 
+    @JsonDeserialize(using = MoneyDeserializer.class)
+    public void setPaidIn(Money paidIn) {
+        this.paidIn = paidIn;
+    }
+
     public Money balance() {
         return balance;
+    }
+
+    @JsonDeserialize(using = MoneyDeserializer.class)
+    public void setBalance(Money balance) {
+        this.balance = balance;
     }
 
     private Money parseMoney(String value) {
