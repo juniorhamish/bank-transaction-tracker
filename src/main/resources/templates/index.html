@@ -1,13 +1,41 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html ng-app="accountsApp">
 <head>
 <title>Accounts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"
+    integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<script src="js/file-upload.js"></script>
 </head>
-<body>
-    <form action="upload" th:action="@{/transactionFile}" method="post" enctype="multipart/form-data">
-        <input id="uploadTransactionFileButton" type="file" name="transactionFile" /> <input
-            id="submitFileButton" type="submit" />
-    </form>
+<body ng-controller="FileUploadController as fileUpload">
+    <div id="fileUpload">
+        <input id="transactionFile" type="file" file-model="transactionFile" />
+        <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
+    </div>
+    <div id="transactionList">
+        <table id="TransactionTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Transaction Type</th>
+                    <th>Description</th>
+                    <th>Paid In</th>
+                    <th>Paid Out</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="transaction in transactions">
+                    <td>{{transaction.date}}</td>
+                    <td>{{transaction.transactionType}}</td>
+                    <td>{{transaction.description}}</td>
+                    <td>{{transaction.paidIn}}</td>
+                    <td>{{transaction.paidOut}}</td>
+                    <td>{{transaction.balance}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
