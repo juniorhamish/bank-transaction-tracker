@@ -3,6 +3,8 @@ package uk.co.dajohnston.cukes.stepdefinitions;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -45,6 +47,14 @@ public class HtmlStepDefinitions {
     public void uploadTransactionsFile(String fileName) {
         WebElement uploadButton = driver.findElement(By.id("transactionFile"));
         uploadButton.sendKeys(fileName);
+    }
+
+    @Then("^I should see (\\d+) transactions$")
+    public void verifyAllTransactionsAreOnThePage(int expectedTransactionCount) {
+        List<WebElement> tableRows = driver.findElements(By.xpath("//table[@id='TransactionTable']/tbody/tr"));
+        int tableRowCount = tableRows.size();
+
+        assertThat(tableRowCount, is(expectedTransactionCount));
     }
 
 }
