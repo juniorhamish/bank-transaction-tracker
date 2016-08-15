@@ -7,6 +7,10 @@ import org.apache.commons.csv.CSVRecord;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+@ToString
+@EqualsAndHashCode
 public class Transaction {
 
     public LocalDate date;
