@@ -2,6 +2,7 @@ package uk.co.dajohnston.accounts.controllers;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class TransactionsController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<Transaction> uploadTransactions(@RequestParam("file") MultipartFile file) throws IOException {
         transactions = new TransactionsParser(new InputStreamReader(file.getInputStream())).parse();
+        Collections.sort(transactions);
 
         return transactions;
     }

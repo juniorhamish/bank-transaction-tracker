@@ -11,7 +11,7 @@ import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
-public class Transaction {
+public class Transaction implements Comparable<Transaction> {
 
     public LocalDate date;
     public String transactionType;
@@ -70,5 +70,10 @@ public class Transaction {
 
     private String nullifyString(String value) {
         return value.isEmpty() ? null : value;
+    }
+
+    @Override
+    public int compareTo(Transaction other) {
+        return this.date.compareTo(other.date);
     }
 }

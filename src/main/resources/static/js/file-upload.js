@@ -32,6 +32,13 @@ accountsApp.service('fileUpload', [ '$http', function($http) {
             return response.data;
         });
     };
+    this.getTransactions = function() {
+        return $http.get("transactions").then(function(response) {
+            console.log(response);
+
+            return response.data;
+        });
+    };
 } ]);
 
 accountsApp.controller('FileUploadController', [ '$scope', 'fileUpload', function($scope, fileUpload) {
@@ -39,6 +46,26 @@ accountsApp.controller('FileUploadController', [ '$scope', 'fileUpload', functio
         var file = $scope.transactionFile;
         fileUpload.uploadToUrl(file, "transactionFile").then(function(data) {
             $scope.transactions = data;
+            if (data.length > 0) {
+                $scope.startDate = data[0].date;
+                $scope.endDate = data[data.length - 1].date;
+            }
+        });
+    };
+    $scope.init = function() {
+        fileUpload.getTransactions().then(function(data) {
+            $scope.transactions = data;
+
+            if (data.length > 0) {
+                $scope.startDate = data[0].date;
+                $scope.endDate = data[data.length - 1].date;
+            }
+        });
+        $("#dateFilterStart").datepicker({
+            dateFormat : 'dd M yy'
+        });
+        $("#dateFilterEnd").datepicker({
+            dateFormat : 'dd M yy'
         });
     };
 } ]);

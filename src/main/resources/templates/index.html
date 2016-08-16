@@ -3,17 +3,28 @@
 <head>
 <title>Accounts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"
     integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+    integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 <script src="js/file-upload.js"></script>
 </head>
-<body ng-controller="FileUploadController as fileUpload">
+<body ng-controller="FileUploadController as fileUpload" data-ng-init="init()">
     <div id="fileUpload">
         <input id="transactionFile" type="file" file-model="transactionFile" />
         <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
     </div>
     <div id="transactionList">
+        <div id="filters">
+            <p>
+                Start Date: <input type="text" id="dateFilterStart" datepicker="" ng-model="startDate" />
+            </p>
+            <p>
+                End Date: <input type="text" id="dateFilterEnd" datepicker="" ng-model="endDate" />
+            </p>
+        </div>
         <table id="TransactionTable">
             <thead>
                 <tr>

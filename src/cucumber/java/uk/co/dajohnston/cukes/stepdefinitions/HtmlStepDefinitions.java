@@ -63,4 +63,16 @@ public class HtmlStepDefinitions {
         assertThat(tableRowCount, is(expectedTransactionCount));
     }
 
+    @Then("^the date filter should be \"([^\"]*)\" to \"([^\"]*)\"$")
+    public void checkDateFilter(String startDate, String endDate) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='TransactionTable']/tbody/tr")));
+
+        WebElement startDateField = driver.findElement(By.id("dateFilterStart"));
+        WebElement endDateField = driver.findElement(By.id("dateFilterEnd"));
+
+        assertThat(startDateField.getAttribute("value"), is(startDate));
+        assertThat(endDateField.getAttribute("value"), is(endDate));
+    }
+
 }
