@@ -7,5 +7,5 @@ Feature: show main page
 
   Scenario: the main page should have an option to upload a transactions file
     Given I view the homepage
-     When I upload transactions file "NationwideSample.csv"
+     When I upload transactions file "/Users/djohnston/dev/katas/accounts/src/cucumber/resources/NationwideSample.csv"
      Then I should see 134 transactions

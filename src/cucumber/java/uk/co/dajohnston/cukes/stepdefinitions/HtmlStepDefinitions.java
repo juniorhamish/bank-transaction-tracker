@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
 import cucumber.api.java.After;
@@ -47,6 +49,10 @@ public class HtmlStepDefinitions {
     public void uploadTransactionsFile(String fileName) {
         WebElement uploadButton = driver.findElement(By.id("transactionFile"));
         uploadButton.sendKeys(fileName);
+        driver.findElement(By.id("submitFileButton")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id='TransactionTable']/tbody/tr")));
     }
 
     @Then("^I should see (\\d+) transactions$")
