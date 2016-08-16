@@ -7,11 +7,11 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.joda.money.Money;
 import org.junit.Test;
 
 public class TransactionsParserTest {
@@ -58,10 +58,10 @@ public class TransactionsParserTest {
 
         List<Transaction> transactions = transactionParser.parse();
 
-        assertThat(transactions.get(0).balance(), is(Money.parse("GBP 99.99")));
+        assertThat(transactions.get(0).balance(), is(BigDecimal.valueOf(99.99)));
         assertThat(transactions.get(0).date(), is(LocalDate.of(1981, 10, 21)));
-        assertThat(transactions.get(0).paidIn(), is(Money.parse("GBP 1.11")));
-        assertThat(transactions.get(0).paidOut(), is(Money.parse("GBP 3.56")));
+        assertThat(transactions.get(0).paidIn(), is(BigDecimal.valueOf(1.11)));
+        assertThat(transactions.get(0).paidOut(), is(BigDecimal.valueOf(3.56)));
         assertThat(transactions.get(0).description(), is("Some shop somewhere"));
         assertThat(transactions.get(0).transactionType(), is("Direct Debit"));
     }
@@ -88,7 +88,7 @@ public class TransactionsParserTest {
 
         List<Transaction> transactions = transactionParser.parse();
 
-        assertThat(transactions.get(0).paidIn(), is(Money.parse("GBP 0.00")));
+        assertThat(transactions.get(0).paidIn(), is(BigDecimal.ZERO));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class TransactionsParserTest {
 
         List<Transaction> transactions = transactionParser.parse();
 
-        assertThat(transactions.get(0).paidOut(), is(Money.parse("GBP 0.00")));
+        assertThat(transactions.get(0).paidOut(), is(BigDecimal.ZERO));
     }
 
 }

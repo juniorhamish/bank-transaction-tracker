@@ -1,17 +1,13 @@
 package uk.co.dajohnston.accounts;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.csv.CSVRecord;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import uk.co.dajohnston.accounts.json.MoneyDeserializer;
 
 @ToString
 @EqualsAndHashCode
@@ -20,9 +16,9 @@ public class Transaction {
     public LocalDate date;
     public String transactionType;
     public String description;
-    public Money paidOut;
-    public Money paidIn;
-    public Money balance;
+    public BigDecimal paidOut;
+    public BigDecimal paidIn;
+    public BigDecimal balance;
 
     public Transaction() {
         // Empty for JSON
@@ -52,39 +48,24 @@ public class Transaction {
         return description;
     }
 
-    public Money paidOut() {
+    public BigDecimal paidOut() {
         return paidOut;
     }
 
-    @JsonDeserialize(using = MoneyDeserializer.class)
-    public void setPaidOut(Money paidOut) {
-        this.paidOut = paidOut;
-    }
-
-    public Money paidIn() {
+    public BigDecimal paidIn() {
         return paidIn;
     }
 
-    @JsonDeserialize(using = MoneyDeserializer.class)
-    public void setPaidIn(Money paidIn) {
-        this.paidIn = paidIn;
-    }
-
-    public Money balance() {
+    public BigDecimal balance() {
         return balance;
     }
 
-    @JsonDeserialize(using = MoneyDeserializer.class)
-    public void setBalance(Money balance) {
-        this.balance = balance;
-    }
-
-    private Money parseMoney(String value) {
+    private BigDecimal parseMoney(String value) {
         if (value.isEmpty()) {
-            return Money.zero(CurrencyUnit.GBP);
+            return BigDecimal.ZERO;
         }
-        value = value.replace("£", "GBP ");
-        return Money.parse(value);
+        value = value.replace("£", "");
+        return new BigDecimal(value);
     }
 
     private String nullifyString(String value) {

@@ -9,13 +9,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.joda.money.Money;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
@@ -99,9 +99,9 @@ public class RestStepDefinitions {
         expectedTransaction.date = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd MMM yyyy"));
         expectedTransaction.transactionType = transactionType;
         expectedTransaction.description = description;
-        expectedTransaction.paidOut = Money.parse(paidOut.replace("£", "GBP"));
-        expectedTransaction.paidIn = Money.parse(paidIn.replace("£", "GBP"));
-        expectedTransaction.balance = Money.parse(balance.replace("£", "GBP"));
+        expectedTransaction.paidOut = new BigDecimal(paidOut.replace("£", ""));
+        expectedTransaction.paidIn = new BigDecimal(paidIn.replace("£", ""));
+        expectedTransaction.balance = new BigDecimal(balance.replace("£", ""));
 
         assertThat(transactions, hasItem(expectedTransaction));
     }
