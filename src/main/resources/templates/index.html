@@ -27,12 +27,12 @@
             </thead>
             <tbody>
                 <tr ng-repeat="transaction in transactions">
-                    <td>{{transaction.date}}</td>
+                    <td>{{transaction.date | date:"fullDate"}}</td>
                     <td>{{transaction.transactionType}}</td>
                     <td>{{transaction.description}}</td>
-                    <td>{{transaction.paidIn}}</td>
-                    <td>{{transaction.paidOut}}</td>
-                    <td>{{transaction.balance}}</td>
+                    <td>{{transaction.paidIn | currency:"£":2}}</td>
+                    <td>{{transaction.paidOut | currency:"£":2}}</td>
+                    <td>{{transaction.balance | currency:"£":2}}</td>
                 </tr>
             </tbody>
         </table>

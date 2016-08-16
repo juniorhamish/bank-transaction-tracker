@@ -62,7 +62,7 @@ public class Transaction {
 
     private BigDecimal parseMoney(String value) {
         if (value.isEmpty()) {
-            return BigDecimal.ZERO;
+            return new BigDecimal("0.00");
         }
         value = value.replace("£", "");
         return new BigDecimal(value);
