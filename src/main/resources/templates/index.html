@@ -16,15 +16,15 @@
         <input id="transactionFile" type="file" file-model="transactionFile" />
         <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
     </div>
+    <div id="filters">
+        <p>
+            Start Date: <input type="text" id="dateFilterStart" datepicker="" ng-model="startDate" />
+        </p>
+        <p>
+            End Date: <input type="text" id="dateFilterEnd" datepicker="" ng-model="endDate" />
+        </p>
+    </div>
     <div id="transactionList">
-        <div id="filters">
-            <p>
-                Start Date: <input type="text" id="dateFilterStart" datepicker="" ng-model="startDate" />
-            </p>
-            <p>
-                End Date: <input type="text" id="dateFilterEnd" datepicker="" ng-model="endDate" />
-            </p>
-        </div>
         <table id="TransactionTable">
             <thead>
                 <tr>
