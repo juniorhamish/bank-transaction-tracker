@@ -16,7 +16,7 @@ accountsApp.directive('fileModel', [ '$parse', function($parse) {
     };
 } ]);
 
-accountsApp.service('fileUpload', [ '$http', function($http) {
+accountsApp.service('transactionService', [ '$http', function($http) {
     this.uploadToUrl = function(file, url) {
         var data = new FormData();
         data.append('file', file);
@@ -41,10 +41,10 @@ accountsApp.service('fileUpload', [ '$http', function($http) {
     };
 } ]);
 
-accountsApp.controller('FileUploadController', [ '$scope', 'fileUpload', function($scope, fileUpload) {
+accountsApp.controller('TransactionController', [ '$scope', 'transactionService', function($scope, transactionService) {
     $scope.uploadTransactions = function() {
         var file = $scope.transactionFile;
-        fileUpload.uploadToUrl(file, "transactionFile").then(function(data) {
+        transactionService.uploadToUrl(file, "transactionFile").then(function(data) {
             $scope.transactions = data;
             if (data.length > 0) {
                 $scope.startDate = data[0].date;
@@ -53,7 +53,7 @@ accountsApp.controller('FileUploadController', [ '$scope', 'fileUpload', functio
         });
     };
     $scope.init = function() {
-        fileUpload.getTransactions().then(function(data) {
+        transactionService.getTransactions().then(function(data) {
             $scope.transactions = data;
 
             if (data.length > 0) {

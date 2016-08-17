@@ -11,7 +11,7 @@
     integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 <script src="js/controller.js"></script>
 </head>
-<body ng-controller="FileUploadController as fileUpload" data-ng-init="init()">
+<body ng-controller="TransactionController" data-ng-init="init()">
     <div id="fileUpload">
         <input id="transactionFile" type="file" file-model="transactionFile" />
         <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
