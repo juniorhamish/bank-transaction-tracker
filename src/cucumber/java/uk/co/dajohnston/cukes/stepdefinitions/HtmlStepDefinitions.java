@@ -75,4 +75,15 @@ public class HtmlStepDefinitions {
         assertThat(endDateField.getAttribute("value"), is(endDate));
     }
 
+    @When("^I filter by date range \"([^\"]*)\" to \"([^\"]*)\"$")
+    public void setDateFilters(String startDate, String endDate) {
+        WebElement startDateField = driver.findElement(By.id("dateFilterStart"));
+        WebElement endDateField = driver.findElement(By.id("dateFilterEnd"));
+
+        startDateField.clear();
+        startDateField.sendKeys(startDate);
+        endDateField.clear();
+        endDateField.sendKeys(endDate);
+    }
+
 }

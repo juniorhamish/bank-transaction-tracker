@@ -1,4 +1,4 @@
-var accountsApp = angular.module('accountsApp', []);
+var accountsApp = angular.module('accountsApp', [ 'ui.bootstrap' ]);
 
 accountsApp.directive('fileModel', [ '$parse', function($parse) {
     return {
@@ -27,15 +27,11 @@ accountsApp.service('transactionService', [ '$http', function($http) {
                 'Content-Type' : undefined
             }
         }).then(function(response) {
-            console.log(response);
-
             return response.data;
         });
     };
     this.getTransactions = function() {
         return $http.get("transactions").then(function(response) {
-            console.log(response);
-
             return response.data;
         });
     };
@@ -45,27 +41,57 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
     $scope.uploadTransactions = function() {
         var file = $scope.transactionFile;
         transactionService.uploadToUrl(file, "transactionFile").then(function(data) {
-            $scope.transactions = data;
-            if (data.length > 0) {
-                $scope.startDate = data[0].date;
-                $scope.endDate = data[data.length - 1].date;
-            }
+            $scope.setTransactions(data);
         });
+    };
+    $scope.startChanged = function() {
+        $scope.startDate.setHours(0, 0, 0, 0);
+        $scope.endDateOptions.minDate = $scope.startDate;
+    };
+    $scope.endChanged = function() {
+        $scope.endDate.setHours(0, 0, 0, 0);
+        $scope.startDateOptions.maxDate = $scope.endDate;
+    };
+    $scope.openStartDate = function() {
+        $scope.startDatePopup.opened = true;
+    };
+    $scope.openEndDate = function() {
+        $scope.endDatePopup.opened = true;
+    };
+    $scope.startDatePopup = {
+        opened : false
+    };
+    $scope.endDatePopup = {
+        opened : false
     };
     $scope.init = function() {
         transactionService.getTransactions().then(function(data) {
-            $scope.transactions = data;
-
-            if (data.length > 0) {
-                $scope.startDate = data[0].date;
-                $scope.endDate = data[data.length - 1].date;
-            }
-        });
-        $("#dateFilterStart").datepicker({
-            dateFormat : 'dd M yy'
-        });
-        $("#dateFilterEnd").datepicker({
-            dateFormat : 'dd M yy'
+            $scope.setTransactions(data);
         });
     };
+    $scope.setTransactions = function(data) {
+        $scope.allTransactions = data;
+        $scope.transactions = data;
+
+        if (data.length > 0) {
+            $scope.startDate = new Date(data[0].date).setHours(0, 0, 0, 0);
+            $scope.endDate = new Date(data[data.length - 1].date).setHours(0, 0, 0, 0);
+        }
+    }
 } ]);
+
+accountsApp.filter("myfilter", function() {
+    return function(items, from, to) {
+        var result = [];
+        if (items) {
+            for (var i = 0; i < items.length; i++) {
+                var itemDate = new Date(items[i].date);
+                itemDate.setHours(0, 0, 0, 0);
+                if (itemDate >= from && itemDate <= to) {
+                    result.push(items[i]);
+                }
+            }
+        }
+        return result;
+    };
+});
