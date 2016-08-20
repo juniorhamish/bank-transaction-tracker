@@ -88,7 +88,7 @@ public class TransactionsParserTest {
 
         List<Transaction> transactions = transactionParser.parse();
 
-        assertThat(transactions.get(0).paidIn(), is(BigDecimal.ZERO));
+        assertThat(transactions.get(0).paidIn(), is(new BigDecimal("0.00")));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class TransactionsParserTest {
 
         List<Transaction> transactions = transactionParser.parse();
 
-        assertThat(transactions.get(0).paidOut(), is(BigDecimal.ZERO));
+        assertThat(transactions.get(0).paidOut(), is(new BigDecimal("0.00")));
     }
 
 }

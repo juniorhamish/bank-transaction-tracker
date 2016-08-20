@@ -5,27 +5,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"
-    integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    data-integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" data-crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
-    integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    data-integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" data-crossorigin="anonymous"></script>
 <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.1.0/ui-bootstrap-tpls.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css" />
-<script src="js/controller.js"></script>
+<script src="../js/controller.js"></script>
 </head>
 <body ng-controller="TransactionController" data-ng-init="init()">
     <div id="fileUpload">
-        <input id="transactionFile" type="file" file-model="transactionFile" />
+        <input id="transactionFile" type="file" data-file-model="transactionFile" />
         <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
     </div>
     <div id="filters" class="row">
         <div class="col-md-6">
             Start Date
             <p class="input-group">
-                <input id="dateFilterStart" type="text" class="form-control" uib-datepicker-popup="dd MMM yyyy"
-                    ng-model="startDate" is-open="startDatePopup.opened" ng-required="true"
-                    datepicker-options="startDateOptions" ng-change="startChanged()" /> <span class="input-group-btn">
+                <input id="dateFilterStart" type="text" class="form-control" data-uib-datepicker-popup="dd MMM yyyy"
+                    ng-model="startDate" data-is-open="startDatePopup.opened" ng-required="true"
+                    data-datepicker-options="startDateOptions" ng-change="startChanged()" /> <span
+                    class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openStartDate()">
                         <i class="glyphicon glyphicon-calendar"></i>
                     </button>
@@ -35,9 +36,9 @@
         <div class="col-md-6">
             End Date
             <p class="input-group">
-                <input id="dateFilterEnd" type="text" class="form-control" uib-datepicker-popup="dd MMM yyyy"
-                    ng-model="endDate" is-open="endDatePopup.opened" ng-required="true"
-                    datepicker-options="endDateOptions" ng-change="endChanged()" /> <span class="input-group-btn">
+                <input id="dateFilterEnd" type="text" class="form-control" data-uib-datepicker-popup="dd MMM yyyy"
+                    ng-model="endDate" data-is-open="endDatePopup.opened" ng-required="true"
+                    data-datepicker-options="endDateOptions" ng-change="endChanged()" /> <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openEndDate()">
                         <i class="glyphicon glyphicon-calendar"></i>
                     </button>
