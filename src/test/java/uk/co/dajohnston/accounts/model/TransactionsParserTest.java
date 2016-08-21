@@ -1,4 +1,4 @@
-package uk.co.dajohnston.accounts;
+package uk.co.dajohnston.accounts.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;

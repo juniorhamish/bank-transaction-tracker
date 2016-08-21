@@ -3,7 +3,7 @@ Feature: Rest API for dealing with transactions
 
   Scenario: Upload transaction file
     When I upload "NationwideSample.csv"
-    Then I should get a success response
+    Then I should get a 200 response code
 
   Scenario: uploaded transactions should be available
     Given I upload "NationwideSample.csv"

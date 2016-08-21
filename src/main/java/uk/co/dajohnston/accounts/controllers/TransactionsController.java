@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import uk.co.dajohnston.accounts.Transaction;
-import uk.co.dajohnston.accounts.TransactionsParser;
+import uk.co.dajohnston.accounts.model.Transaction;
+import uk.co.dajohnston.accounts.model.TransactionsParser;
 
 @RestController
 public class TransactionsController {
