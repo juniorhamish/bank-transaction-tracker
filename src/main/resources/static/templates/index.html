@@ -13,6 +13,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.css" />
 <script src="../js/controller.js"></script>
+<style>
+th {
+    text-align: center
+}
+</style>
 </head>
 <body ng-controller="TransactionController" data-ng-init="init()">
     <div id="fileUpload">
@@ -60,7 +65,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="transaction in transactions | myfilter:startDate:endDate">
-                    <td>{{transaction.date | date:"fullDate"}}</td>
+                    <td style="text-align: right;">{{transaction.date | date:"fullDate"}}</td>
                     <td>{{transaction.transactionType}}</td>
                     <td>{{transaction.description}}</td>
                     <td>{{transaction.paidIn | currency:"£":2}}</td>
