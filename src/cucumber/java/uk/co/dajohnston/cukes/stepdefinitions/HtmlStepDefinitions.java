@@ -1,9 +1,12 @@
 package uk.co.dajohnston.cukes.stepdefinitions;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -84,6 +87,28 @@ public class HtmlStepDefinitions {
         startDateField.sendKeys(startDate);
         endDateField.clear();
         endDateField.sendKeys(endDate);
+    }
+
+    @Then("^I should see category \"([^\"]*)\"$")
+    public void verifyCategoryIsShown(String name) {
+        WebElement categoryList = driver.findElement(By.id("categoryList"));
+        List<WebElement> categories = categoryList.findElements(By.className("category"));
+
+        List<String> categoryNames = categories.stream().map(category -> category.getText())
+                .collect(Collectors.toList());
+
+        assertThat(categoryNames, contains(name));
+    }
+
+    @Then("^I should see the category \"([^\"]*)\" with colour \"([^\"]*)\"$")
+    public void verifyCategoryHasColour(String name, String colour) {
+        WebElement categoryList = driver.findElement(By.id("categoryList"));
+        List<WebElement> categories = categoryList.findElements(By.className("category"));
+
+        Optional<WebElement> categoryWithName = categories.stream().filter(category -> category.getText().equals(name))
+                .findFirst();
+
+        assertThat(categoryWithName.get().getCssValue("color"), is(colour));
     }
 
 }

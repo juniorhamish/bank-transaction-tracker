@@ -29,3 +29,13 @@ Feature: show main page
       And I view the homepage
      When I filter by date range "23 Jul 2016" to "05 Aug 2016"
      Then I should see 2 transactions
+
+  Scenario: add a category
+    Given I add category "Eating Out"
+     When I view the homepage
+     Then I should see category "Eating Out"
+
+  Scenario: show category colour
+    Given I add category "Eating Out" with colour "Red"
+     When I view the homepage
+     Then I should see the category "Eating Out" with colour "rgba(255, 0, 0, 1)"

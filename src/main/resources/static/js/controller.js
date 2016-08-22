@@ -37,48 +37,60 @@ accountsApp.service('transactionService', [ '$http', function($http) {
     };
 } ]);
 
-accountsApp.controller('TransactionController', [ '$scope', 'transactionService', function($scope, transactionService) {
-    $scope.uploadTransactions = function() {
-        var file = $scope.transactionFile;
-        transactionService.uploadToUrl(file, "transactionFile").then(function(data) {
-            $scope.setTransactions(data);
+accountsApp.service('categoryService', [ '$http', function($http) {
+    this.getCategories = function() {
+        return $http.get("categories").then(function(response) {
+            return response.data;
         });
-    };
-    $scope.startChanged = function() {
-        $scope.startDate.setHours(0, 0, 0, 0);
-        $scope.endDateOptions.minDate = $scope.startDate;
-    };
-    $scope.endChanged = function() {
-        $scope.endDate.setHours(0, 0, 0, 0);
-        $scope.startDateOptions.maxDate = $scope.endDate;
-    };
-    $scope.openStartDate = function() {
-        $scope.startDatePopup.opened = true;
-    };
-    $scope.openEndDate = function() {
-        $scope.endDatePopup.opened = true;
-    };
-    $scope.startDatePopup = {
-        opened : false
-    };
-    $scope.endDatePopup = {
-        opened : false
-    };
-    $scope.init = function() {
-        transactionService.getTransactions().then(function(data) {
-            $scope.setTransactions(data);
-        });
-    };
-    $scope.setTransactions = function(data) {
-        $scope.allTransactions = data;
-        $scope.transactions = data;
-
-        if (data.length > 0) {
-            $scope.startDate = new Date(data[0].date).setHours(0, 0, 0, 0);
-            $scope.endDate = new Date(data[data.length - 1].date).setHours(0, 0, 0, 0);
-        }
     }
 } ]);
+
+accountsApp.controller('TransactionController', [ '$scope', 'transactionService', 'categoryService',
+        function($scope, transactionService, categoryService) {
+            $scope.uploadTransactions = function() {
+                var file = $scope.transactionFile;
+                transactionService.uploadToUrl(file, "transactionFile").then(function(data) {
+                    $scope.setTransactions(data);
+                });
+            };
+            $scope.startChanged = function() {
+                $scope.startDate.setHours(0, 0, 0, 0);
+                $scope.endDateOptions.minDate = $scope.startDate;
+            };
+            $scope.endChanged = function() {
+                $scope.endDate.setHours(0, 0, 0, 0);
+                $scope.startDateOptions.maxDate = $scope.endDate;
+            };
+            $scope.openStartDate = function() {
+                $scope.startDatePopup.opened = true;
+            };
+            $scope.openEndDate = function() {
+                $scope.endDatePopup.opened = true;
+            };
+            $scope.startDatePopup = {
+                opened : false
+            };
+            $scope.endDatePopup = {
+                opened : false
+            };
+            $scope.init = function() {
+                transactionService.getTransactions().then(function(data) {
+                    $scope.setTransactions(data);
+                });
+                categoryService.getCategories().then(function(data) {
+                    $scope.categories = data;
+                });
+            };
+            $scope.setTransactions = function(data) {
+                $scope.allTransactions = data;
+                $scope.transactions = data;
+
+                if (data.length > 0) {
+                    $scope.startDate = new Date(data[0].date).setHours(0, 0, 0, 0);
+                    $scope.endDate = new Date(data[data.length - 1].date).setHours(0, 0, 0, 0);
+                }
+            }
+        } ]);
 
 accountsApp.filter("myfilter", function() {
     return function(items, from, to) {

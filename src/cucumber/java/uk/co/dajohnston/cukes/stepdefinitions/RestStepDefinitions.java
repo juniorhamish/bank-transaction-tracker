@@ -130,9 +130,17 @@ public class RestStepDefinitions {
     }
 
     @Given("^I add category \"([^\"]*)\"$")
-    public void addCategory(String categoryName) {
-        result = restTemplate.postForEntity("http://localhost:" + port + "/categories", new Category(categoryName),
-                Category.class);
+    public void addCategory(String name) {
+        addCategory(new Category(name, ""));
+    }
+
+    @Given("^I add category \"([^\"]*)\" with colour \"([^\"]*)\"$")
+    public void addCategoryWithColour(String name, String colour) {
+        addCategory(new Category(name, colour));
+    }
+
+    private void addCategory(Category category) {
+        result = restTemplate.postForEntity("http://localhost:" + port + "/categories", category, Category.class);
     }
 
     @When("^I get all categories$")
