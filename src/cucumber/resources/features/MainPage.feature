@@ -164,7 +164,6 @@ Feature: show main page
      When I sort by "Balance"
      Then the first category will be "Wages"
 
-  @dev
   Scenario: create new category
     Given I view the homepage
      When I create a category "Credit Cards"
