@@ -131,12 +131,7 @@ public class RestStepDefinitions {
 
     @Given("^I add category \"([^\"]*)\"$")
     public void addCategory(String name) {
-        addCategory(new Category(name, ""));
-    }
-
-    @Given("^I add category \"([^\"]*)\" with colour \"([^\"]*)\"$")
-    public void addCategoryWithColour(String name, String colour) {
-        addCategory(new Category(name, colour));
+        addCategory(new Category(name));
     }
 
     private void addCategory(Category category) {

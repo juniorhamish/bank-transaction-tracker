@@ -77,8 +77,8 @@ th {
             </table>
         </div>
         <uib-accordion id="categoryList" class="col-md-3">
-        <div uib-accordion-group="" class="panel-default category" style="background-color:{{category.colour}};"
-            heading="{{category.name}}" ng-repeat="category in categories">
+        <div uib-accordion-group="" class="panel-default category" heading="{{category.name}}"
+            ng-repeat="category in categories">
             <div ng-repeat="matcher in category.matchers">{{matcher}}</div>
         </div>
         </uib-accordion>

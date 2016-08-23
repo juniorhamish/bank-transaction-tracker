@@ -34,8 +34,3 @@ Feature: show main page
     Given I add category "Eating Out"
      When I view the homepage
      Then I should see category "Eating Out"
-
-  Scenario: show category colour
-    Given I add category "Eating Out" with colour "Red"
-     When I view the homepage
-     Then I should see the category "Eating Out" with colour "rgba(255, 0, 0, 1)"
