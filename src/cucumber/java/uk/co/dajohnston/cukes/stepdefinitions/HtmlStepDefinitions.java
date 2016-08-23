@@ -145,4 +145,13 @@ public class HtmlStepDefinitions {
         return descriptionIndex;
     }
 
+    @When("^I create a category \"([^\"]*)\"$")
+    public void createCategory(String name) {
+        WebElement categoryTextField = driver.findElement(By.id("categoryName"));
+        WebElement createCategoryButton = driver.findElement(By.id("createCategoryButton"));
+
+        categoryTextField.sendKeys(name);
+        createCategoryButton.click();
+    }
+
 }

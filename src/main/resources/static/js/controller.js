@@ -42,6 +42,13 @@ accountsApp.service('categoryService', [ '$http', function($http) {
         return $http.get("categories").then(function(response) {
             return response.data;
         });
+    };
+    this.createCategory = function(name) {
+        return $http.post("categories", {
+            "name" : name
+        }).then(function(response) {
+            return response.data;
+        });
     }
 } ]);
 
@@ -95,7 +102,14 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
                     $scope.startDate = new Date(data[0].date).setHours(0, 0, 0, 0);
                     $scope.endDate = new Date(data[data.length - 1].date).setHours(0, 0, 0, 0);
                 }
-            }
+            };
+            $scope.createCategory = function() {
+                categoryService.createCategory($scope.newCategoryName).then(function(data) {
+                    categoryService.getCategories().then(function(data) {
+                        $scope.categories = data;
+                    });
+                });
+            };
         } ]);
 
 accountsApp.filter("transactionFilter", function() {
