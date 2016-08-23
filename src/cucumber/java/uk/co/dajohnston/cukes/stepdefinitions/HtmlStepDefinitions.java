@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
@@ -12,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.context.embedded.LocalServerPort;
 
@@ -97,6 +99,50 @@ public class HtmlStepDefinitions {
                 .collect(Collectors.toList());
 
         assertThat(categoryNames, contains(name));
+    }
+
+    @When("^I filter by category \"([^\"]*)\"$")
+    public void filterByCategory(String category) {
+        Select categoryFilter = new Select(driver.findElement(By.id("categoryFilter")));
+
+        categoryFilter.selectByVisibleText(category);
+    }
+
+    @When("^I reset the category filter$")
+    public void resetCategoryFilter() {
+        Select categoryFilter = new Select(driver.findElement(By.id("categoryFilter")));
+
+        categoryFilter.selectByIndex(0);
+    }
+
+    @When("^I sort by \"([^\"]*)\"$")
+    public void sortBy(String column) {
+        Optional<WebElement> columnHeader = driver.findElements(By.tagName("th")).stream()
+                .filter(header -> header.getText().equals(column)).findFirst();
+
+        columnHeader.get().click();
+    }
+
+    @Then("^the first category will be \"([^\"]*)\"$")
+    public void verifyFirstCategoryDescription(String description) {
+        int descriptionIndex = getDescriptionColumnIndex();
+
+        List<WebElement> firstRowColumns = driver.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(0)
+                .findElements(By.tagName("td"));
+
+        assertThat(firstRowColumns.get(descriptionIndex).getText(), is(description));
+    }
+
+    private int getDescriptionColumnIndex() {
+        List<WebElement> headers = driver.findElement(By.tagName("thead")).findElements(By.tagName("th"));
+        int descriptionIndex = -1;
+        for (int i = 0; i < headers.size(); i++) {
+            if (headers.get(i).getText().equals("Description")) {
+                descriptionIndex = i;
+                break;
+            }
+        }
+        return descriptionIndex;
     }
 
 }

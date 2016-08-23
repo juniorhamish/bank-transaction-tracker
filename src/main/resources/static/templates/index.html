@@ -20,13 +20,16 @@ th {
 </style>
 </head>
 <body ng-controller="TransactionController" data-ng-init="init()">
-    <div id="fileUpload">
-        <input id="transactionFile" type="file" data-file-model="transactionFile" />
-        <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
+    <div id="fileUpload" class="row">
+        <div class="col-md-3">
+            <input id="transactionFile" type="file" data-file-model="transactionFile" />
+        </div>
+        <div class="col-md-3">
+            <button id="submitFileButton" ng-click="uploadTransactions()">Upload Transactions</button>
+        </div>
     </div>
     <div id="filters" class="row">
-        <div class="col-md-6">
-            Start Date
+        <div class="col-md-4">
             <p class="input-group">
                 <input id="dateFilterStart" type="text" class="form-control" data-uib-datepicker-popup="dd MMM yyyy"
                     ng-model="startDate" data-is-open="startDatePopup.opened" ng-required="true"
@@ -38,8 +41,7 @@ th {
                 </span>
             </p>
         </div>
-        <div class="col-md-6">
-            End Date
+        <div class="col-md-4">
             <p class="input-group">
                 <input id="dateFilterEnd" type="text" class="form-control" data-uib-datepicker-popup="dd MMM yyyy"
                     ng-model="endDate" data-is-open="endDatePopup.opened" ng-required="true"
@@ -50,22 +52,28 @@ th {
                 </span>
             </p>
         </div>
+        <div class="col-md-4">
+            <select id="categoryFilter" class="form-control" ng-model="selectedCategory"
+                ng-options="category.name for category in categories">
+                <option value="">Select Category</option>
+            </select>
+        </div>
     </div>
     <div class="row">
         <div id="transactionList" class="col-md-9">
             <table id="TransactionTable">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Transaction Type</th>
-                        <th>Description</th>
-                        <th>Paid In</th>
-                        <th>Paid Out</th>
-                        <th>Balance</th>
+                        <th ng-click="sortBy('date')">Date</th>
+                        <th ng-click="sortBy('transactionType')">Transaction Type</th>
+                        <th ng-click="sortBy('description')">Description</th>
+                        <th ng-click="sortBy('paidIn')">Paid In</th>
+                        <th ng-click="sortBy('paidOut')">Paid Out</th>
+                        <th ng-click="sortBy('balance')">Balance</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="transaction in transactions | myfilter:startDate:endDate">
+                    <tr ng-repeat="transaction in transactions | transactionFilter:startDate:endDate:selectedCategory | orderBy:orderBy:reverse">
                         <td style="text-align: right;">{{transaction.date | date:"fullDate"}}</td>
                         <td>{{transaction.transactionType}}</td>
                         <td>{{transaction.description}}</td>

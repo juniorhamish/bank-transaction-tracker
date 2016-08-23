@@ -73,7 +73,13 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
             $scope.endDatePopup = {
                 opened : false
             };
+            $scope.sortBy = function(parameterName) {
+                $scope.reverse = ($scope.orderBy === parameterName) ? !$scope.reverse : false;
+                $scope.orderBy = parameterName;
+            }
             $scope.init = function() {
+                $scope.reverse = false;
+                $scope.orderBy = "date";
                 transactionService.getTransactions().then(function(data) {
                     $scope.setTransactions(data);
                 });
@@ -92,15 +98,21 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
             }
         } ]);
 
-accountsApp.filter("myfilter", function() {
-    return function(items, from, to) {
+accountsApp.filter("transactionFilter", function() {
+    return function(items, from, to, category) {
         var result = [];
         if (items) {
             for (var i = 0; i < items.length; i++) {
                 var itemDate = new Date(items[i].date);
                 itemDate.setHours(0, 0, 0, 0);
                 if (itemDate >= from && itemDate <= to) {
-                    result.push(items[i]);
+                    if (category) {
+                        if ($.inArray(items[i].description, category.matchers) > -1) {
+                            result.push(items[i]);
+                        }
+                    } else {
+                        result.push(items[i]);
+                    }
                 }
             }
         }
