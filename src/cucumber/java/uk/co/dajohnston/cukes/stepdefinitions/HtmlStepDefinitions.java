@@ -91,7 +91,8 @@ public class HtmlStepDefinitions {
     }
 
     @Then("^I should see category \"([^\"]*)\"$")
-    public void verifyCategoryIsShown(String name) {
+    public void verifyCategoryIsShown(String name) throws InterruptedException {
+        Thread.sleep(100);
         WebElement categoryList = driver.findElement(By.id("categoryList"));
         List<WebElement> categories = categoryList.findElements(By.className("category"));
 
