@@ -151,8 +151,18 @@ public class HtmlStepDefinitions {
         WebElement categoryTextField = driver.findElement(By.id("categoryName"));
         WebElement createCategoryButton = driver.findElement(By.id("createCategoryButton"));
 
+        categoryTextField.clear();
         categoryTextField.sendKeys(name);
         createCategoryButton.click();
+    }
+
+    @Then("^I should see categories$")
+    public void verifyCategoryOrder(List<String> categories) {
+        List<WebElement> categoryList = driver.findElements(By.className("category"));
+        List<String> categoryNames = categoryList.stream().map(category -> category.getText())
+                .collect(Collectors.toList());
+
+        assertThat(categoryNames, contains(categories.toArray()));
     }
 
 }

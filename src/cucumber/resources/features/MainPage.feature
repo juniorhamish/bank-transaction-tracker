@@ -168,3 +168,11 @@ Feature: show main page
     Given I view the homepage
      When I create a category "Credit Cards"
      Then I should see category "Credit Cards"
+
+  Scenario: sort categories alphabetically
+    Given I view the homepage
+      And I create a category "Foo"
+     When I create a category "Bar"
+     Then I should see categories
+      | Bar |
+      | Foo |
