@@ -87,8 +87,11 @@ th {
         </div>
         <div class="col-md-3">
             <uib-accordion id="categoryList">
-            <div uib-accordion-group="" class="panel-default category" heading="{{category.name}}"
+            <div uib-accordion-group="" class="panel-default category"
                 ng-repeat="category in categories | orderBy:'name'">
+                <uib-accordion-heading> {{ category.name }}
+                <button class="btn pull-right" style="padding: 0px 10px" ng-click="removeCategory(category.name, $event)">x</button>
+                </uib-accordion-heading>
                 <div ng-repeat="matcher in category.matchers">{{matcher}}</div>
             </div>
             </uib-accordion>

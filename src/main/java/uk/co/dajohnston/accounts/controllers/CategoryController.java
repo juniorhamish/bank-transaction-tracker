@@ -22,7 +22,7 @@ public class CategoryController {
 
     @RequestMapping(value = "/categories", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Category> addCategory(@RequestBody Category category) {
-        if (categories.containsKey(category.getName())) {
+        if (category.getName().trim().isEmpty() || categories.containsKey(category.getName())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         categories.put(category.getName(), category);

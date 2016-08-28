@@ -176,3 +176,11 @@ Feature: show main page
      Then I should see categories
       | Bar |
       | Foo |
+
+  Scenario: delete a category
+    Given I add category "Foo"
+      And I add category "Bar"
+      And I view the homepage
+     When I delete the category "Foo"
+     Then I should see categories
+      | Bar |

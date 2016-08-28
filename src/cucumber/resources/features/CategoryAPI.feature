@@ -59,3 +59,11 @@ Feature: Rest API for categorising transactions
       And I get category "Foo"
      Then the category should have matchers:
       | D |
+
+  Scenario: cannot create a category with empty string
+    When I add category ""
+    Then I should get a 400 response code
+
+  Scenario: cannot create a category with empty string
+    When I add category "    "
+    Then I should get a 400 response code

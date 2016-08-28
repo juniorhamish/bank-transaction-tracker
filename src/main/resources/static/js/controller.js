@@ -35,6 +35,11 @@ accountsApp.service('transactionService', [ '$http', function($http) {
             return response.data;
         });
     };
+    this.deleteByName = function() {
+        return $http.delete("http://localhost:8080/categories").then(function(response) {
+            return response.data;
+        });
+    }
 } ]);
 
 accountsApp.service('categoryService', [ '$http', function($http) {
@@ -47,6 +52,11 @@ accountsApp.service('categoryService', [ '$http', function($http) {
         return $http.post("categories", {
             "name" : name
         }).then(function(response) {
+            return response.data;
+        });
+    }
+    this.deleteByName = function(name) {
+        return $http.delete("categories/" + name).then(function(response) {
             return response.data;
         });
     }
@@ -108,6 +118,22 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
                     categoryService.getCategories().then(function(data) {
                         $scope.categories = data;
                     });
+                });
+            };
+            $scope.delete = function(name) {
+                categoryService.deleteByName(name).then(function(data) {
+                    $scope.categories = data;
+                });
+            };
+            $scope.removeCategory = function(name, e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                $scope.delete(name);
+                $scope.categories.filter(function(category) {
+                    return category.name !== name;
                 });
             };
         } ]);

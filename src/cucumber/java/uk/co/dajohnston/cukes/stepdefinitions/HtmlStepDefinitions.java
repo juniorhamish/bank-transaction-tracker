@@ -159,10 +159,21 @@ public class HtmlStepDefinitions {
     @Then("^I should see categories$")
     public void verifyCategoryOrder(List<String> categories) {
         List<WebElement> categoryList = driver.findElements(By.className("category"));
-        List<String> categoryNames = categoryList.stream().map(category -> category.getText())
-                .collect(Collectors.toList());
+        List<String> categoryNames = categoryList.stream()
+                .map(category -> category.findElement(By.className("ng-scope")).getText()).collect(Collectors.toList());
 
         assertThat(categoryNames, contains(categories.toArray()));
+    }
+
+    @When("^I delete the category \"([^\"]*)\"$")
+    public void deleteCategory(String name) {
+        List<WebElement> categoryList = driver.findElements(By.className("category"));
+        WebElement categoryElement = categoryList.stream()
+                .filter(category -> category.findElement(By.className("ng-scope")).getText().equals(name)).findFirst()
+                .get();
+
+        WebElement deleteButton = categoryElement.findElement(By.tagName("button"));
+        deleteButton.click();
     }
 
 }
