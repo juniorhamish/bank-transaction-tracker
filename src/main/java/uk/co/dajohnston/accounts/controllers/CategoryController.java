@@ -55,9 +55,11 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/categories/{name}", method = RequestMethod.PUT)
-    public void setCategoryMatchers(@PathVariable String name, @RequestBody List<String> matchers) {
+    public List<String> setCategoryMatchers(@PathVariable String name, @RequestBody List<String> matchers) {
         Category category = categories.get(name);
 
         category.setMatchers(matchers);
+
+        return category.getMatchers();
     }
 }

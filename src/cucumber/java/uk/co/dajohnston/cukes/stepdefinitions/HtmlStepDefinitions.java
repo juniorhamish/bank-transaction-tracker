@@ -167,13 +167,49 @@ public class HtmlStepDefinitions {
 
     @When("^I delete the category \"([^\"]*)\"$")
     public void deleteCategory(String name) {
-        List<WebElement> categoryList = driver.findElements(By.className("category"));
-        WebElement categoryElement = categoryList.stream()
-                .filter(category -> category.findElement(By.className("ng-scope")).getText().equals(name)).findFirst()
-                .get();
+        WebElement categoryElement = getCategoryElement(name);
 
         WebElement deleteButton = categoryElement.findElement(By.tagName("button"));
         deleteButton.click();
+    }
+
+    @When("^I add matcher \"([^\"]*)\" to category \"([^\"]*)\"$")
+    public void addMatcherToCategory(String matcher, String categoryName) {
+        WebElement categoryElement = getCategoryElement(categoryName);
+        ensureMatchersDisplayed(categoryElement);
+
+        WebElement matcherInput = categoryElement.findElement(By.id("matcherInput"));
+        matcherInput.clear();
+        matcherInput.sendKeys(matcher);
+        WebElement addMatcherButton = categoryElement.findElement(By.id("addMatcherButton"));
+        addMatcherButton.click();
+    }
+
+    @Then("^category \"([^\"]*)\" should have matchers$")
+    public void verifyMatchersInCategory(String categoryName, List<String> matchers) {
+        WebElement categoryElement = getCategoryElement(categoryName);
+        ensureMatchersDisplayed(categoryElement);
+
+        List<WebElement> matcherElements = categoryElement.findElements(By.className("matcher"));
+        List<String> actualMatchers = matcherElements.stream().map(matcher -> matcher.getText())
+                .collect(Collectors.toList());
+
+        assertThat(actualMatchers, contains(matchers.toArray()));
+    }
+
+    private void ensureMatchersDisplayed(WebElement categoryElement) {
+        WebElement categoryElementHeading = categoryElement.findElement(By.className("panel-heading"));
+        if ("false".equals(categoryElementHeading.getAttribute("aria-selected"))) {
+            categoryElement.findElement(By.tagName("a")).click();
+        }
+    }
+
+    private WebElement getCategoryElement(String categoryName) {
+        List<WebElement> categoryList = driver.findElements(By.className("category"));
+        WebElement categoryElement = categoryList.stream()
+                .filter(category -> category.findElement(By.className("ng-scope")).getText().equals(categoryName))
+                .findFirst().get();
+        return categoryElement;
     }
 
 }

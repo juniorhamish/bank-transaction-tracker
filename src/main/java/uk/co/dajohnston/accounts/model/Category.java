@@ -1,11 +1,12 @@
 package uk.co.dajohnston.accounts.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
 
     private String name;
-    private List<String> matchers;
+    private List<String> matchers = new ArrayList<>();
 
     public Category(String name) {
         this.name = name;

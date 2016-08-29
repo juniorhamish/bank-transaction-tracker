@@ -184,3 +184,10 @@ Feature: show main page
      When I delete the category "Foo"
      Then I should see categories
       | Bar |
+
+  Scenario: add a matcher to a category
+    Given I add category "Foo"
+      And I view the homepage
+     When I add matcher "Bar" to category "Foo"
+     Then category "Foo" should have matchers
+      | Bar |

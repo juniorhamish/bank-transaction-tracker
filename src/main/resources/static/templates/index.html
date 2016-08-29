@@ -90,9 +90,18 @@ th {
             <div uib-accordion-group="" class="panel-default category"
                 ng-repeat="category in categories | orderBy:'name'">
                 <uib-accordion-heading> {{ category.name }}
-                <button class="btn pull-right" style="padding: 0px 10px" ng-click="removeCategory(category.name, $event)">x</button>
+                <button class="btn pull-right" style="padding: 0px 10px"
+                    ng-click="removeCategory(category.name, $event)">x</button>
                 </uib-accordion-heading>
-                <div ng-repeat="matcher in category.matchers">{{matcher}}</div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" id="matcherInput" ng-model="newMatcher.name" />
+                    </div>
+                    <div class="col-md-3">
+                        <button id="addMatcherButton" ng-click="addMatcher(category)">Add</button>
+                    </div>
+                </div>
+                <div ng-repeat="matcher in category.matchers" class="matcher">{{matcher}}</div>
             </div>
             </uib-accordion>
             <div class="row">

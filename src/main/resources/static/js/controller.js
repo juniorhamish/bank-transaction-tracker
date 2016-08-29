@@ -60,10 +60,16 @@ accountsApp.service('categoryService', [ '$http', function($http) {
             return response.data;
         });
     }
+    this.addMatchers = function(categoryName, matchers) {
+        return $http.put("categories/" + categoryName, matchers).then(function(response) {
+            return response.data;
+        });
+    };
 } ]);
 
 accountsApp.controller('TransactionController', [ '$scope', 'transactionService', 'categoryService',
         function($scope, transactionService, categoryService) {
+            $scope.newMatcher = {};
             $scope.uploadTransactions = function() {
                 var file = $scope.transactionFile;
                 transactionService.uploadToUrl(file, "transactionFile").then(function(data) {
@@ -117,6 +123,7 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
                 categoryService.createCategory($scope.newCategoryName).then(function(data) {
                     categoryService.getCategories().then(function(data) {
                         $scope.categories = data;
+                        $scope.newCategoryName = "";
                     });
                 });
             };
@@ -136,6 +143,13 @@ accountsApp.controller('TransactionController', [ '$scope', 'transactionService'
                     return category.name !== name;
                 });
             };
+            $scope.addMatcher = function(category) {
+                category.matchers.push($scope.newMatcher.name);
+                categoryService.addMatchers(category.name, category.matchers).then(function(data) {
+                    category.matchers = data;
+                    $scope.newMatcher.name = "";
+                });
+            }
         } ]);
 
 accountsApp.filter("transactionFilter", function() {
